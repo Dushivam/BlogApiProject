@@ -10,8 +10,8 @@ namespace Blog.API
     public class BlogPostRepository : IBlogPostRepository
     {
         private readonly BlogDbContext _context;
-        private readonly ILogger _logger;
-        public BlogPostRepository(BlogDbContext context, ILogger logger)
+        private readonly ILogger<BlogPostRepository> _logger;
+        public BlogPostRepository(BlogDbContext context, ILogger<BlogPostRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -77,8 +77,17 @@ namespace Blog.API
             _logger.LogInformation("Updating blog post with ID {Id} in the database", post.Id);
             try
             {
-                _context.Posts.Update(post);
-                await _context.SaveChangesAsync();
+                var existingPost = await _context.Posts.FindAsync(post.Id);
+                if (existingPost != null)
+                {
+                    // Map properties from the incoming post to the existingPost
+                    existingPost.Title = post.Title;
+                    existingPost.Content = post.Content;
+                    existingPost.Author = post.Author;
+                    existingPost.PublishedDate = post.PublishedDate;
+
+                    await _context.SaveChangesAsync();
+                }
                 _logger.LogInformation("Successfully updated blog post with ID {Id} in the database", post.Id);
             }
             catch (Exception ex)

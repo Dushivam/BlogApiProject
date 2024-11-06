@@ -8,8 +8,8 @@ namespace Blog.API.Services
     public class BlogPostService : IBlogPostService
     {
         private readonly IBlogPostRepository _postRepository;
-        private readonly ILogger _logger;
-        public BlogPostService(IBlogPostRepository postRepository, ILogger logger)
+        private readonly ILogger<BlogPostService> _logger;
+        public BlogPostService(IBlogPostRepository postRepository, ILogger<BlogPostService> logger)
         {
             _postRepository = postRepository;
             _logger = logger;
