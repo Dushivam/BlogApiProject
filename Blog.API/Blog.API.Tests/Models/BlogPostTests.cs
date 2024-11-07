@@ -23,9 +23,9 @@ namespace Blog.API.Tests.Models
             var post = new BlogPost
             {
                 Id = 1,
-                Title = "Valid Title",
-                Content = "This is some valid content.",
-                Author = "John Doe",
+                Title = "A Beginner’s Guide to Gardening",
+                Content = "A beginner’s guide to growing plants and creating a flourishing garden.",
+                Author = "Marcelo",
                 PublishedDate = DateTime.Now
             };
 
@@ -40,8 +40,8 @@ namespace Blog.API.Tests.Models
             {
                 Id = 1,
                 Title = null,
-                Content = "This is some content.",
-                Author = "John Doe",
+                Content = "A beginner’s guide to growing plants and creating a flourishing garden.",
+                Author = "Lamine Yamal",
                 PublishedDate = DateTime.Now
             };
 
@@ -56,9 +56,9 @@ namespace Blog.API.Tests.Models
             var post = new BlogPost
             {
                 Id = 1,
-                Title = new string('A', 51), // Exceeds max length of 50
-                Content = "This is some content.",
-                Author = "John Doe",
+                Title = new string('A', 55),
+                Content = "A beginner’s guide to growing plants and creating a flourishing garden.",
+                Author = "Jadon Sanchez",
                 PublishedDate = DateTime.Now
             };
 
@@ -72,9 +72,9 @@ namespace Blog.API.Tests.Models
             var post = new BlogPost
             {
                 Id = 1,
-                Title = "Valid Title",
-                Content = "This is some content.",
-                Author = "John123",
+                Title = "A Beginner’s Guide to Gardening",
+                Content = "A beginner’s guide to growing plants and creating a flourishing garden.",
+                Author = "Elliot123",
                 PublishedDate = DateTime.Now
             };
 
@@ -89,9 +89,9 @@ namespace Blog.API.Tests.Models
             var post = new BlogPost
             {
                 Id = 1,
-                Title = "Valid Title",
+                Title = "A Beginner’s Guide to Gardening",
                 Content = null,
-                Author = "John Doe",
+                Author = "Roy Keane",
                 PublishedDate = DateTime.Now
             };
 

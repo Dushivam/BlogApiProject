@@ -68,7 +68,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BlogPost>> CreatePost(BlogPost post)
+        public async Task<ActionResult<BlogPost>> CreatePost(BlogPostCreateDto postDto)
         {
             _logger.LogInformation("Creating a new blog post");
 
@@ -78,7 +78,8 @@ namespace Blog.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingPost = await _blogPostService.GetPostByIdAsync(post.Id);
+            // Check if a post with the same ID already exists
+            var existingPost = await _blogPostService.GetPostByIdAsync(postDto.Id);
             if (existingPost != null)
             {
                 _logger.LogWarning("Post ID already exists.");
@@ -87,6 +88,15 @@ namespace Blog.API.Controllers
 
             try
             {
+                var post = new BlogPost
+                {
+                    Id = postDto.Id,
+                    Title = postDto.Title,
+                    Content = postDto.Content,
+                    Author = postDto.Author,
+                    PublishedDate = DateTime.Now
+                };
+
                 await _blogPostService.AddPostAsync(post);
                 _logger.LogInformation("Successfully created blog post with ID {Id}", post.Id);
                 return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
@@ -102,6 +112,43 @@ namespace Blog.API.Controllers
                 return StatusCode(500, $"Internal server error. {ex.Message}");
             }
         }
+
+
+        //[HttpPost]
+        //public async Task<ActionResult<BlogPost>> CreatePost(BlogPost post)
+        //{
+        //    _logger.LogInformation("Creating a new blog post");
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        _logger.LogWarning("Invalid blog post data provided");
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var existingPost = await _blogPostService.GetPostByIdAsync(post.Id);
+        //    if (existingPost != null)
+        //    {
+        //        _logger.LogWarning("Post ID already exists.");
+        //        return BadRequest("Post ID already exists.");
+        //    }
+
+        //    try
+        //    {
+        //        await _blogPostService.AddPostAsync(post);
+        //        _logger.LogInformation("Successfully created blog post with ID {Id}", post.Id);
+        //        return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
+        //    }
+        //    catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+        //    {
+        //        _logger.LogError(dbEx, "A database error occurred while creating a new blog post");
+        //        return StatusCode(500, $"Internal server error. {dbEx.Message}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "An error occurred while creating a new blog post");
+        //        return StatusCode(500, $"Internal server error. {ex.Message}");
+        //    }
+        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePost(int id, BlogPostUpdateDto postDto)

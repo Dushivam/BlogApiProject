@@ -28,10 +28,10 @@ namespace Blog.API.Tests.Controller
         [Fact]
         public async Task GetAllPosts_ReturnsOk_WithListOfPosts()
         {
-            var mockPosts = new List<BlogPost> { 
-                new BlogPost { Id = 1, Title = "Test Post", Content = "This is a test post content." }, 
-                new BlogPost { Id = 2, Title = "Test Post", Content = "This is a test post content." },
-                new BlogPost { Id = 3, Title = "Test Post", Content = "This is a test post content." }
+            var mockPosts = new List<BlogPost> {
+                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Discover the marvels beneath the Earth's crust and what mysteries lie within." }, 
+                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Learn the techniques that transform simple ingredients into gourmet meals." },
+                new BlogPost { Id = 3, Title = "The Future of Artificial Intelligence", Content = "AI is transforming our world – here’s what the future might hold." }
             };
             _mockBlogPostService.Setup(service => service.GetAllPostsAsync()).ReturnsAsync(mockPosts);
 
@@ -45,7 +45,7 @@ namespace Blog.API.Tests.Controller
         [Fact]
         public async Task GetPostById_ReturnsOk_WithPost_WhenPostExists()
         {
-            var mockPost = new BlogPost { Id = 1, Title = "Test Post", Content = "This is a test post content." };
+            var mockPost = new BlogPost { Id = 1, Title = "Exploring the World of Quantum Physics", Content = "Quantum physics is strange and wonderful – a fascinating world awaits!." };
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync(mockPost);
 
             var result = await _controller.GetPostById(1);
@@ -66,22 +66,37 @@ namespace Blog.API.Tests.Controller
         [Fact]
         public async Task CreatePost_ReturnsCreatedAtActionResult_WhenPostIsCreated()
         {
-            var newPost = new BlogPost { Id = 1, Title = "New Post", Content = "This is a test post content." };
-            _mockBlogPostService.Setup(service => service.AddPostAsync(newPost)).Returns(Task.CompletedTask);
+            var newPostDto = new BlogPostCreateDto
+            {
+                Title = "Exploring the World of Quantum Physics",
+                Content = "Quantum physics is strange and wonderful – a fascinating world awaits!",
+                Author = "Rob Stark"
+            };
 
-            var result = await _controller.CreatePost(newPost);
+            _mockBlogPostService.Setup(service => service.AddPostAsync(It.IsAny<BlogPost>())).Returns(Task.CompletedTask);
+
+            var result = await _controller.CreatePost(newPostDto);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var returnValue = Assert.IsType<BlogPost>(createdAtActionResult.Value);
-            Assert.Equal(newPost.Id, returnValue.Id);
+            Assert.Equal(newPostDto.Title, returnValue.Title);
+            Assert.Equal(newPostDto.Content, returnValue.Content);
+            Assert.Equal(newPostDto.Author, returnValue.Author);
         }
 
         [Fact]
         public async Task CreatePost_ReturnsBadRequest_WhenTitleIsMissing()
         {
-            var newPost = new BlogPost { Id = 1, Title = null, Content = "Content without a title" };
+            var newPostDto = new BlogPostCreateDto
+            {
+                Id = 1,
+                Title = null,
+                Content = "Manage your time better with these actionable strategies.",
+                Author = "Wayne Rooney"
+            };
+
             _controller.ModelState.AddModelError("Title", "The Title field is required.");
 
-            var result = await _controller.CreatePost(newPost);
+            var result = await _controller.CreatePost(newPostDto);
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal(400, badRequestResult.StatusCode);
         }
@@ -89,22 +104,29 @@ namespace Blog.API.Tests.Controller
         [Fact]
         public async Task CreatePost_ReturnsBadRequest_WhenContentIsMissing()
         {
-            var newPost = new BlogPost { Id = 1, Title = "Title without content", Content = null }; 
+            var newPost = new BlogPostCreateDto { Id = 1, Title = "Time Management", Content = null, Author = "James Milner" }; 
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
             var result = await _controller.CreatePost(newPost);
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal(400, badRequestResult.StatusCode);
         }
+
         [Fact]
         public async Task CreatePost_ReturnsBadRequest_WhenIdAlreadyExists()
         {
-            var existingPost = new BlogPost { Id = 1, Title = "Existing Post", Content = "This is existing content." };
-            var newPost = new BlogPost { Id = 1, Title = "New Post", Content = "This is a test post content." };
+            var existingPost = new BlogPost { Id = 1, Title = "Existing Post", Content = "This is existing content.", Author = "Nicolas Jackson" };
+            var newPostDto = new BlogPostCreateDto
+            {
+                Id = 1,
+                Title = "New Post",
+                Content = "This is a test post content.",
+                Author = "Adam Smith"
+            };
 
-            _mockBlogPostService.Setup(service => service.GetPostByIdAsync(newPost.Id)).ReturnsAsync(existingPost);
+            _mockBlogPostService.Setup(service => service.GetPostByIdAsync(existingPost.Id)).ReturnsAsync(existingPost);
 
-            var result = await _controller.CreatePost(newPost);
+            var result = await _controller.CreatePost(newPostDto);
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal(400, badRequestResult.StatusCode);
             Assert.Equal("Post ID already exists.", badRequestResult.Value);
@@ -113,7 +135,7 @@ namespace Blog.API.Tests.Controller
         [Fact]
         public async Task CreatePost_ReturnsBadRequest_WhenAuthorNameIsInvalid()
         {
-            var invalidAuthorPost = new BlogPost { Id = 1, Title = "Valid Title", Content = "This is valid content.", Author = "Author123" };
+            var invalidAuthorPost = new BlogPostCreateDto { Id = 1, Title = "Writing for Impact: Crafting Compelling Stories", Content = "Learn the art of storytelling to engage and inspire your readers.", Author = "Elizabeth1498" };
             _controller.ModelState.AddModelError("Author", "Author name can only contain letters and spaces.");
             var result = await _controller.CreatePost(invalidAuthorPost);
 
@@ -122,29 +144,31 @@ namespace Blog.API.Tests.Controller
         }
 
         [Fact]
-        public async Task Update_ReturnsOk_WhenUpdateIsSuccessful()
+        public async Task Update_ReturnsNoContent_WhenUpdateIsSuccessful()
         {
-            var updatedPost = new BlogPost { Id = 1, Title = "Updated Title", Content = "This is a test post content." };
-            _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync(updatedPost);
-            _mockBlogPostService.Setup(service => service.UpdatePostAsync(updatedPost)).Returns(Task.CompletedTask);
+            var existingPost = new BlogPost { Id = 1, Title = "Original Title", Content = "This is the original content." };
+            var updatedPostDto = new BlogPostUpdateDto { Title = "Updated Title", Content = "This is the updated post content.", Author = "Updated Author" };
 
-            var result = await _controller.UpdatePost(1, updatedPost);
-            var newPost = await _controller.GetPostById(1);
+            _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync(existingPost);
+            _mockBlogPostService.Setup(service => service.UpdatePostAsync(It.IsAny<BlogPost>())).Returns(Task.CompletedTask);
 
-            Assert.IsType<OkResult>(result);
-            Assert.NotNull(newPost);
-            Assert.NotEqual("Updated Title", newPost?.Value?.Title);
+            var result = await _controller.UpdatePost(1, updatedPostDto);
+            Assert.IsType<NoContentResult>(result);
+            Assert.Equal("Updated Title", existingPost.Title);
+            Assert.Equal("This is the updated post content.", existingPost.Content);
+            Assert.Equal("Updated Author", existingPost.Author);
         }
 
         [Fact]
         public async Task Update_ReturnsNotFound_WhenPostDoesNotExist()
         {
-            var updatedPost = new BlogPostUpdateDto { Title = "Updated Title", Content = "This is a test post content." };
+            var updatedPost = new BlogPostUpdateDto { Title = "Updated Title", Content = "This is the updated post content." };
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync((BlogPost)null);
 
             var result = await _controller.UpdatePost(1, updatedPost);
             Assert.IsType<NotFoundResult>(result);
         }
+
         [Fact]
         public async Task Update_ReturnsBadRequest_WhenTitleIsMissing()
         {
@@ -168,21 +192,9 @@ namespace Blog.API.Tests.Controller
         }
 
         [Fact]
-        public async Task Update_ReturnsBadRequest_WhenIdIsNotEqual()
-        {
-            var updatedPost = new BlogPostUpdateDto { Title = "Updated title without content", Content = null };
-            _controller.ModelState.AddModelError("Content", "The Content field is required.");
-
-            var result = await _controller.UpdatePost(1, updatedPost);
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal(400, badRequestResult.StatusCode);
-        }
-
-
-        [Fact]
         public async Task UpdatePost_ReturnsBadRequest_WhenAuthorNameIsInvalid()
         {
-            var invalidAuthorPost = new BlogPostUpdateDto { Title = "Valid Title", Content = "This is valid content.", Author = "Author123" };
+            var invalidAuthorPost = new BlogPostUpdateDto { Title = "Exploring the Deep Sea: Mysteries Beneath", Content = "Explore the unexplored with this journey into the depths of the sea.", Author = "Ashley123" };
             _controller.ModelState.AddModelError("Author", "Author name can only contain letters and spaces.");
 
             var result = await _controller.UpdatePost(1, invalidAuthorPost);
@@ -190,24 +202,10 @@ namespace Blog.API.Tests.Controller
             Assert.Equal(400, badRequestResult.StatusCode);
         }
 
-        //[Fact]
-        //public async Task UpdatePost_ReturnsBadRequest_WhenIdAlreadyExists()
-        //{
-        //    var existingPost = new BlogPost { Id = 2, Title = "Existing Post", Content = "This is existing content." };
-        //    var updatedPost = new BlogPostUpdateDto { Title = "Updated Title", Content = "Updated content." };
-
-        //    _mockBlogPostService.Setup(service => service.GetPostByIdAsync(updatedPost.Id)).ReturnsAsync(existingPost);
-
-        //    var result = await _controller.UpdatePost(2, updatedPost);
-        //    var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        //    Assert.Equal(400, badRequestResult.StatusCode);
-        //    Assert.Equal("Post ID already exists.", badRequestResult.Value);
-        //}
-
         [Fact]
         public async Task DeletePost_ReturnsOk_WhenDeletionIsSuccessful()
         {
-            var mockPost = new BlogPost { Id = 1, Title = "Updated Title", Content = "This is a test post content." };
+            var mockPost = new BlogPost { Id = 1, Title = "Exploring the Deep Sea: Mysteries Beneath", Content = "Explore the unexplored with this journey into the depths of the sea." };
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync(mockPost);
             _mockBlogPostService.Setup(service => service.DeletePostAsync(1)).Returns(Task.CompletedTask);
 

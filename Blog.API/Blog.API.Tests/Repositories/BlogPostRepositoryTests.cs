@@ -22,8 +22,8 @@ namespace Blog.API.Tests.Repositories
             _mockLogger = new Mock<ILogger<BlogPostRepository>>();
             _repository = new BlogPostRepository(_context, _mockLogger.Object);
 
-            _context.Posts.Add(new BlogPost { Id = 699, Title = "Test Post 1", Content = "Content 1", Author = "Author 1", PublishedDate = DateTime.Now });
-            _context.Posts.Add(new BlogPost { Id = 700, Title = "Test Post 2", Content = "Content 2", Author = "Author 2", PublishedDate = DateTime.Now });
+            _context.Posts.Add(new BlogPost { Id = 699, Title = "The History of the Roman Empire", Content = "An exploration into the rise and fall of one of history’s greatest empires.", Author = "Gareth", PublishedDate = DateTime.Now });
+            _context.Posts.Add(new BlogPost { Id = 700, Title = "Mastering Public Speaking", Content = "Practical tips and exercises for overcoming fear and speaking confidently.", Author = "Southgate", PublishedDate = DateTime.Now });
             _context.SaveChanges();
         }
 
@@ -42,7 +42,7 @@ namespace Blog.API.Tests.Repositories
 
             Assert.NotNull(post);
             Assert.Equal(699, post.Id);
-            Assert.Equal("Test Post 1", post.Title);
+            Assert.Equal("The History of the Roman Empire", post.Title);
         }
 
         [Fact]
@@ -58,13 +58,13 @@ namespace Blog.API.Tests.Repositories
             var postList = await _repository.GetAllAsync();
             int postCount = postList.Count();
 
-            var newPost = new BlogPost { Id = 993, Title = "New Post", Content = "New Content", Author = "New Author", PublishedDate = DateTime.Now };
+            var newPost = new BlogPost { Id = 993, Title = "Top 10 Travel Destinations for Adventure Lovers", Content = "A guide to the most exciting travel destinations for thrill-seekers", Author = "Janette", PublishedDate = DateTime.Now };
             await _repository.AddAsync(newPost);
             var post = await _context.Posts.FindAsync(993);
 
             Assert.NotNull(post);
             Assert.Equal(993, post.Id);
-            Assert.Equal("New Post", post.Title);
+            Assert.Equal("Top 10 Travel Destinations for Adventure Lovers", post.Title);
             Assert.Equal(postCount + 1, _context.Posts.Count());
 
         }
@@ -72,13 +72,14 @@ namespace Blog.API.Tests.Repositories
         [Fact]
         public async Task UpdateAsync_UpdatesExistingPost()
         {
-            var updatedPost = new BlogPost { Id = 699, Title = "Updated Title", Content = "Updated Content", Author = "Updated Author", PublishedDate = DateTime.Now };
+            var updatedPost = new BlogPost { Id = 699, Title = "Updated Title", Content = "Updated Content", Author = "Tuchel", PublishedDate = DateTime.Now };
             await _repository.UpdateAsync(updatedPost);
             var post = await _context.Posts.FindAsync(699);
 
             Assert.NotNull(post);
             Assert.Equal("Updated Title", post.Title);
             Assert.Equal("Updated Content", post.Content);
+            Assert.Equal("Tuchel", post.Author);
         }
 
         [Fact]
