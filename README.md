@@ -1,5 +1,4 @@
 # Blog API Project
-
 ## Description
 
 The project uses SQLite as its database and uses Serilog for structured logging, ensuring that critical actions and errors are logged effectively. The project is also Dockerized for ease of deployment, making it simple to run in any environment. Additionally, comprehensive validation is applied to ensure data integrity, and meaningful error messages are returned to the client, enhancing the API's usability
@@ -8,10 +7,10 @@ The project uses SQLite as its database and uses Serilog for structured logging,
 
 - ✨ [Features](#-features)
 - 💻 [Technologies Used](#-technologies-used)
-- 🏛️ [Project Architecture](#-project-architecture)
+- 🏛️ [Project Architecture](#️-project-architecture)
 - 🧠 [Design Decisions](#-design-decisions)
-- 🛡️ [Validation, Error Handling, and Logging](#-validation-error-handling-and-logging)
-- ⚙️ [Project Setup](#-project-setup)
+- 🛡️ [Validation, Error Handling, and Logging](#️-validation-error-handling-and-logging)
+- ⚙️ [Project Setup](#️-project-setup)
 - 🧪 [Testing Strategy](#-testing-strategy)
 - 📦 [Nugget Packages](#-nugget-packages)
 - ➕ [Additional Features](#-additional-features)
@@ -90,7 +89,7 @@ The project uses **Dependency Injection** extensively, allowing services and rep
 Data annotations were selected to enforce validation rules directly in the **Model** layer. This decision simplifies validation checks in the API, allowing automatic validation via attributes like `[Required]` and `[RegularExpression]` (for example, ensuring the `Author` name contains only letters).
 
 ### 4. Logging
-   - **Serilog** was chosen for logging due to its structured logging capabilities, making it easier to track and monitor application events.
+**Serilog** was chosen for logging due to its structured logging capabilities, making it easier to track and monitor application events.
 
 ### 5. Database Choice: SQLite
 
@@ -180,14 +179,14 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
    dotnet run
    ```
 
-   By default, the API will be available at `https://localhost:<ssl-port>` or `http://localhost:<port>`. 
+   By default, the API will be available at `https://localhost:<port>` or `http://localhost:<port>`. 
 
 6. **Access Swagger Documentation**
 
    Once the API is running, you can access Swagger documentation at:
 
    ```
-   https://localhost:5001/swagger
+   http(s)://localhost:<port>/swagger
    ```
 
 ### Running with Docker
