@@ -20,7 +20,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet]
-        [OpenApiOperation (summary:"Retrieve all blog posts", "Get posts from db")]
+        [OpenApiOperation (summary:"Retrieve all blog posts", "")]
         public async Task<ActionResult<IEnumerable<BlogPost>>> GetAllPosts()
         {
             _logger.LogInformation("Getting all blog posts");
@@ -43,6 +43,8 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [OpenApiOperation(summary: "Retrieve a blog by id", "")]
+
         public async Task<ActionResult<BlogPost>> GetPostById(int id)
         {
             _logger.LogInformation("Getting blog post with ID {Id}", id);
@@ -70,6 +72,8 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost]
+        [OpenApiOperation(summary: "Create a blog", "")]
+
         public async Task<ActionResult<BlogPost>> CreatePost(BlogPostCreateDto postDto)
         {
             _logger.LogInformation("Creating a new blog post");
@@ -114,6 +118,7 @@ namespace Blog.API.Controllers
             }
         }
 
+        [OpenApiOperation(summary: "Update a blog post", "")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePost(int id, BlogPostUpdateDto postDto)
         {
@@ -151,6 +156,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [OpenApiOperation(summary: "Delete a blog post", "")]
         public async Task<IActionResult> DeletePost(int id)
         {
             _logger.LogInformation("Deleting blog post with ID {Id}", id);
