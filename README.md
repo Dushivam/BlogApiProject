@@ -90,7 +90,7 @@ Data annotations were selected to enforce validation rules directly in the **Mod
 
 ### 4. Logging
 **Serilog** was chosen for logging due to its structured logging capabilities, making it easier to track and monitor application events.
-
+ 
 ### 5. Database Choice: SQLite
 
 **SQLite** was chosen as the database for its lightweight and file-based nature, which simplifies local development and deployment in Docker. While SQLite is limited in scalability for high-traffic production use, it is ideal for the scope of this project and can be easily swapped out for a more robust DBMS if needed.
