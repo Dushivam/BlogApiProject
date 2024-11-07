@@ -2,6 +2,7 @@
 using Blog.API.Interfaces;
 using Blog.API.Models;
 using Blog.API.DTOs;
+using NSwag.Annotations;
 
 namespace Blog.API.Controllers
 {
@@ -19,6 +20,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet]
+        [OpenApiOperation (summary:"Retrieve all blog posts", "Get posts from db")]
         public async Task<ActionResult<IEnumerable<BlogPost>>> GetAllPosts()
         {
             _logger.LogInformation("Getting all blog posts");
@@ -78,7 +80,6 @@ namespace Blog.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Check if a post with the same ID already exists
             var existingPost = await _blogPostService.GetPostByIdAsync(postDto.Id);
             if (existingPost != null)
             {
@@ -112,43 +113,6 @@ namespace Blog.API.Controllers
                 return StatusCode(500, $"Internal server error. {ex.Message}");
             }
         }
-
-
-        //[HttpPost]
-        //public async Task<ActionResult<BlogPost>> CreatePost(BlogPost post)
-        //{
-        //    _logger.LogInformation("Creating a new blog post");
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        _logger.LogWarning("Invalid blog post data provided");
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var existingPost = await _blogPostService.GetPostByIdAsync(post.Id);
-        //    if (existingPost != null)
-        //    {
-        //        _logger.LogWarning("Post ID already exists.");
-        //        return BadRequest("Post ID already exists.");
-        //    }
-
-        //    try
-        //    {
-        //        await _blogPostService.AddPostAsync(post);
-        //        _logger.LogInformation("Successfully created blog post with ID {Id}", post.Id);
-        //        return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
-        //    }
-        //    catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
-        //    {
-        //        _logger.LogError(dbEx, "A database error occurred while creating a new blog post");
-        //        return StatusCode(500, $"Internal server error. {dbEx.Message}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred while creating a new blog post");
-        //        return StatusCode(500, $"Internal server error. {ex.Message}");
-        //    }
-        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePost(int id, BlogPostUpdateDto postDto)
@@ -185,54 +149,6 @@ namespace Blog.API.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdatePost(int id, BlogPost post)
-        //{
-        //    _logger.LogInformation("Updating blog post with ID {Id}", id);
-
-        //    if (id != post.Id)
-        //    {
-        //        _logger.LogWarning("Post ID mismatch. Provided ID: {Id}, Post ID: {PostId}", id, post.Id);
-        //        return BadRequest("Post ID mismatch.");
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        _logger.LogWarning("Invalid blog post data provided");
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        var existingPost = await _blogPostService.GetPostByIdAsync(id);
-        //        if (existingPost == null)
-        //        {
-        //            _logger.LogWarning("Blog post with ID {Id} not found", id);
-        //            return NotFound();
-        //        }
-
-        //        var duplicatePost = await _blogPostService.GetPostByIdAsync(post.Id);
-        //        if (duplicatePost != null && duplicatePost.Id != id)
-        //        {
-        //            _logger.LogWarning("Post ID already exists.");
-        //            return BadRequest("Post ID already exists.");
-        //        }
-
-        //        await _blogPostService.UpdatePostAsync(post);
-        //        _logger.LogInformation("Successfully updated blog post with ID {Id}", id);
-        //        return Ok();
-        //    }
-        //    catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
-        //    {
-        //        _logger.LogError(dbEx, "A database error occurred while updating the blog post");
-        //        return StatusCode(500, $"Internal server error. {dbEx.Message}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred while updating blog post with ID {Id}", id);
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id)
