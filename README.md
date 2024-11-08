@@ -87,7 +87,7 @@ DTOs were introduced to facilitate and secure data flow between the client and s
    - **BlogPostCreateDto**: Used when creating a new blog post, this DTO includes only the fields necessary for creation, preventing unintended fields from being set.
    - **BlogPostUpdateDto**: Used to update an existing blog post, restricting updates only to the `Title`, `Content`, and `Author` fields, while preventing updates to fields like `Id` and `PublishedDate` to ensure data integrity.
    
-![Test Results](images/TestResults.png)  ![Test Results](images/TestResults.png) 
+![Test Results](images/CreateDTO.png)  ![Test Results](images/UpdateDTO.png) 
 
 DTOs allows better control over which data is exposed to clients and what data clients can modify.
 
@@ -154,6 +154,8 @@ Data validation is enforced through **Data Annotations** in the model layer.
    - **Custom Regular Expressions**: The `Author` field includes a regular expression check to ensure it contains only alphabetic characters and spaces.
    - **Model State Validation**: The controller checks ModelState.IsValid; if validation fails, a 400 Bad Request response with error details is returned.
 
+![Model](images/Model.png)
+
 ### 2. Error Handling
 
 Error handling is implemented to manage unexpected issues and provide clear feedback to the client:
@@ -194,6 +196,7 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
    Navigate to the project directory and restore dependencies:
 
    ```bash
+   cd Blog.API\Blog.API
    dotnet restore
    ```
 
@@ -201,15 +204,7 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
 
    Ensure that the `appsettings.json` file is configured with the correct SQLite connection string. By default, it will create a `blog.db` file in the project directory.
 
-4. **Run Database Migrations**
-
-   Apply migrations to set up the database schema:
-
-   ```bash
-   dotnet ef database update
-   ```
-
-5. **Run the Application**
+4. **Run the Application**
 
    Start the application using the following command:
 
@@ -221,15 +216,22 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
 
 ### Running with Docker
 
-1. **Build Docker Image**
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/Dushivam/BlogApiProject.git
+   ```
+
+2. **Build Docker Image**
 
    Navigate to the root project directory (the one containing the solution file, .sln), and build the Docker image for the application:
 
    ```bash
-   docker build -f ./Blog.API/Dockerfile -t blogpostapi:latest .
+      cd Blog.API
+      docker build -f ./Blog.API/Dockerfile -t blogpostapi:latest .
    ```
 
-2. **Run Docker Container**
+3. **Run Docker Container**
 
    Start the container with the following command:
 
@@ -280,6 +282,16 @@ This project includes comprehensive unit tests across multiple layers, ensuring 
    - Tests model-specific behaviors and validation attributes.
    - Ensures that data annotations enforce rules like required fields and format restrictions on properties (e.g., ensuring `Author` contains no numbers).
 
+### Running the Tests
+To run all tests, first navigate to the root project directory (the one containing the test project), and run the test.
+
+```bash
+   cd Blog.API
+   dotnet test
+```
+
+This command will execute all tests within the solution, displaying the test results, including any failed tests and their details, in the console.
+
 ### Test Results
 A total of 42 tests were conducted, covering all major components and scenarios. All tests passed successfully, confirming the reliability and accuracy of the API’s core functionality.
 These tests ensure the API meets functional requirements and provides reliable feedback on each core component. With this test suite, modifications can be confidently introduced without breaking existing features, maintaining the API's robustness and stability.
@@ -294,20 +306,20 @@ The **Blog API Project** utilizes several **NuGet packages** to ease development
 
 - **Microsoft.EntityFrameworkCore.Sqlite**: Provides SQLite support for Entity Framework Core, enabling the API to use SQLite as its database.
 
-- **Microsoft.EntityFrameworkCore.Tools**: Adds tools for working with Entity Framework Core in the CLI, such as generating migrations and updating the database.
+- **Microsoft.EntityFrameworkCore.Tools**: Provides CLI tools for managing database migrations and updates.
 
-- **Serilog.AspNetCore**: Integrates Serilog for structured logging within the ASP.NET Core application, providing detailed logs for actions and errors.
+- **Serilog.AspNetCore**: Integrates Serilog for structured logging within the ASP.NET Core application.
 
 - **Serilog.Sinks.Console**: Enables logging to the console, making it easy to view logs while the application is running.
 
-- **Serilog.Sinks.File**: Allows logs to be written to a file, creating a persistent record of actions and errors for later analysis.
+- **Serilog.Sinks.File**: Allows logs to be written to a file, creating a persistent record for later analysis.
 
 - **Swashbuckle.AspNetCore**: Adds Swagger support to auto-generate API documentation and create an interactive UI for testing API endpoints.
 
-- **xUnit and Moq**: A popular testing frameworks for .NET, used to create unit tests for the project to ensure code reliability and functionality.
+- **xUnit and Moq**: Provides a testing framework and mocking capabilities to ensure reliable and well-tested code.
 
-C:\Users\DJAIPALSINGH\.nuget\packages\nswag.annotations\14.1.0\
-C:\Users\DJAIPALSINGH\.nuget\packages\nswag.aspnetcore\14.1.0\
+- **NSwag.Annotations**: Adds Swagger-specific annotations for additional control over API documentation.
+
 ---
 
 ## ➕ Additional Features
