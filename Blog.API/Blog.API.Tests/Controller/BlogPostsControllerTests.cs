@@ -29,17 +29,70 @@ namespace Blog.API.Tests.Controller
         public async Task GetAllPosts_ReturnsOk_WithListOfPosts()
         {
             var mockPosts = new List<BlogPost> {
-                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Discover the marvels beneath the Earth's crust and what mysteries lie within." }, 
-                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Learn the techniques that transform simple ingredients into gourmet meals." },
-                new BlogPost { Id = 3, Title = "The Future of Artificial Intelligence", Content = "AI is transforming our world – here’s what the future might hold." }
+                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Discover the marvels beneath the Earth's crust and what mysteries lie within.", Author = "Jules Verne", PublishedDate = DateTime.Now.AddDays(-10) },
+                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Learn the techniques that transform simple ingredients into gourmet meals.", Author = "Julia Child", PublishedDate = DateTime.Now.AddDays(-5) },
+                new BlogPost { Id = 3, Title = "The Future of Artificial Intelligence", Content = "AI is transforming our world – here’s what the future might hold.", Author = "John McCarthy", PublishedDate = DateTime.Now }
             };
-            _mockBlogPostService.Setup(service => service.GetAllPostsAsync()).ReturnsAsync(mockPosts);
 
+            _mockBlogPostService.Setup(service => service.GetAllPostsAsync(null, null, null, null)).ReturnsAsync(mockPosts);
             var result = await _controller.GetAllPosts();
 
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnValue = Assert.IsType<List<BlogPost>>(okResult.Value);
             Assert.Equal(mockPosts.Count, returnValue.Count);
+        }
+
+        [Fact]
+        public async Task GetAllPosts_FiltersByTitle_ReturnsMatchingPosts()
+        {
+            var mockPosts = new List<BlogPost> {
+                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Content about the Earth's crust.", Author = "Jules Verne", PublishedDate = DateTime.Now }
+            };
+
+            _mockBlogPostService.Setup(service => service.GetAllPostsAsync("Journey", null, null, null)).ReturnsAsync(mockPosts);
+
+            var result = await _controller.GetAllPosts(title: "Journey");
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<BlogPost>>(okResult.Value);
+            Assert.Single(returnValue);
+            Assert.Equal("Journey to the Center of the Earth", returnValue[0].Title);
+        }
+
+
+        [Fact]
+        public async Task GetAllPosts_FiltersByAuthor_ReturnsMatchingPosts()
+        {
+            var mockPosts = new List<BlogPost> {
+                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Learn gourmet techniques.", Author = "Julia Child", PublishedDate = DateTime.Now }
+            };
+
+            _mockBlogPostService.Setup(service => service.GetAllPostsAsync(null, "Julia Child", null, null)).ReturnsAsync(mockPosts);
+
+            var result = await _controller.GetAllPosts(author: "Julia Child");
+
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<BlogPost>>(okResult.Value);
+            Assert.Single(returnValue);
+            Assert.Equal("Julia Child", returnValue[0].Author);
+        }
+
+        [Fact]
+        public async Task GetAllPosts_FiltersByDateRange_ReturnsMatchingPosts()
+        {
+            var mockPosts = new List<BlogPost> {
+                new BlogPost { Id = 3, Title = "The Future of Artificial Intelligence", Content = "AI advancements.", Author = "John McCarthy", PublishedDate = DateTime.Now.AddDays(-1) }
+            };
+
+            var startDate = DateTime.Now.AddDays(-2);
+            var endDate = DateTime.Now;
+
+            _mockBlogPostService.Setup(service => service.GetAllPostsAsync(null, null, startDate, endDate)).ReturnsAsync(mockPosts);
+
+            var result = await _controller.GetAllPosts(startDate: startDate, endDate: endDate);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<BlogPost>>(okResult.Value);
+            Assert.Single(returnValue);
+            Assert.Equal("The Future of Artificial Intelligence", returnValue[0].Title);
         }
 
         [Fact]

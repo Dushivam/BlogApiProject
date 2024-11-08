@@ -179,24 +179,16 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
    dotnet run
    ```
 
-   By default, the API will be available at `https://localhost:<port>` or `http://localhost:<port>`. 
-
-6. **Access Swagger Documentation**
-
-   Once the API is running, you can access Swagger documentation at:
-
-   ```
-   http(s)://localhost:<port>/swagger
-   ```
+   By default, the API will be available at `http://localhost:<port>`.
 
 ### Running with Docker
 
 1. **Build Docker Image**
 
-   Build the Docker image for the application:
+   Navigate to the root project directory (the one containing the solution file, .sln), and build the Docker image for the application:
 
    ```bash
-   docker build -t blog-api .
+   docker build -f ./Blog.API/Dockerfile -t blogpostapi:latest .
    ```
 
 2. **Run Docker Container**
@@ -204,10 +196,19 @@ Follow these steps to set up and run the **Blog API Project** locally or in a co
    Start the container with the following command:
 
    ```bash
-   docker run -p 5000:80 blog-api
+   docker run -p 8080:8080 blogpostapi:latest
    ```
 
-   The API will be accessible at `http://localhost:5000`.
+   The API will be accessible at `http://localhost:8080`.
+
+### **Access Swagger Documentation**
+
+Once the project is running, you can access the Swagger documentation to test the APIs at:
+
+```
+http(s)://localhost:<port>/swagger
+```
+![Screenshot Swagger](images/Swagger.png)
 
 ---
 
@@ -242,7 +243,7 @@ This project includes comprehensive unit tests across multiple layers, ensuring 
    - Ensures that data annotations enforce rules like required fields and format restrictions on properties (e.g., ensuring `Author` contains no numbers).
 
 ### Test Results
-A total of 35 tests were conducted, covering all major components and scenarios. All tests passed successfully, confirming the reliability and accuracy of the API’s core functionality.
+A total of 42 tests were conducted, covering all major components and scenarios. All tests passed successfully, confirming the reliability and accuracy of the API’s core functionality.
 These tests ensure the API meets functional requirements and provides reliable feedback on each core component. With this test suite, modifications can be confidently introduced without breaking existing features, maintaining the API's robustness and stability.
 
 ![Test Results](images/TestResults.png)
@@ -273,9 +274,17 @@ The **Blog API Project** utilizes several **NuGet packages** to ease development
 
 In addition to core functionality, the **Blog API Project** includes several extra features that enhance usability, maintainability, and ease of deployment.
 
-- **Docker Support**: The API is fully Dockerized, allowing easy deployment across different environments with consistent behavior. This enables the application to be run in a container with minimal configuration, making it ideal for cloud deployment.
+- **Docker Support**: The API is fully Dockerized, allowing easy deployment across different environments with consistent behavior. This enables the application to be run in a container with minimal configuration.
 
 - **Swagger Documentation**: Swagger is integrated to auto-generate API documentation and provide an interactive interface at `/swagger`. This interface allows users to test endpoints directly, making it easier for developers and users to understand the available functionality.
+
+- **Search and Filtering**: The API includes search and filtering capabilities on the `GET /api/BlogPosts` endpoint. Users can filter blog posts by `title`, `author`, and published `date range` (using `startDate` and `endDate` query parameters). This feature enables targeted queries, making it easier to retrieve relevant data based on specific criteria.
+
+  **Example Usage**:
+  - `GET /api/BlogPosts?title=MyTitle` — Retrieve posts with titles containing "MyTitle".
+  - `GET /api/BlogPosts?author=AuthorName` — Retrieve posts by a specific author.
+  - `GET /api/BlogPosts?startDate=2023-01-01&endDate=2023-12-31` — Retrieve posts published within a specified date range.
+  - Combination of filters is also supported, e.g., `GET /api/BlogPosts?title=MyTitle&author=AuthorName&startDate=2023-01-01&endDate=2023-12-31`.
 
 ---
 

@@ -22,23 +22,59 @@ namespace Blog.API.Tests.Repositories
             _mockLogger = new Mock<ILogger<BlogPostRepository>>();
             _repository = new BlogPostRepository(_context, _mockLogger.Object);
 
-            _context.Posts.Add(new BlogPost { Id = 699, Title = "The History of the Roman Empire", Content = "An exploration into the rise and fall of one of history’s greatest empires.", Author = "Gareth", PublishedDate = DateTime.Now });
-            _context.Posts.Add(new BlogPost { Id = 700, Title = "Mastering Public Speaking", Content = "Practical tips and exercises for overcoming fear and speaking confidently.", Author = "Southgate", PublishedDate = DateTime.Now });
+            _context.Posts.Add(new BlogPost { Id = 699, Title = "The History of the Roman Empire", Content = "An exploration into the rise and fall of one of history’s greatest empires.", Author = "Gareth", PublishedDate = DateTime.Now.AddDays(-10) });
+            _context.Posts.Add(new BlogPost { Id = 700, Title = "Mastering Public Speaking", Content = "Practical tips and exercises for overcoming fear and speaking confidently.", Author = "Southgate", PublishedDate = DateTime.Now.AddDays(-10) });
             _context.SaveChanges();
         }
 
         [Fact]
-        public async Task GetAllAsync_ReturnsAllPosts()
+        public async Task QueryAllPostsAsync_ReturnsAllPosts()
         {
-            var posts = await _repository.GetAllAsync();
-
+            var posts = await _repository.QueryAllPostsAsync();
             Assert.Equal(2, posts.Count());
         }
 
         [Fact]
-        public async Task GetByIdAsync_ReturnsPost_WhenPostExists()
+        public async Task QueryAllPostsAsync_FiltersByTitle_ReturnsMatchingPosts()
         {
-            var post = await _repository.GetByIdAsync(699);
+            await _context.Posts.AddRangeAsync(new List<BlogPost>
+            {
+                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Exploring Earth's core.", Author = "Jules Verne", PublishedDate = DateTime.Now.AddDays(-10) },
+                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Cooking techniques.", Author = "Julia Child", PublishedDate = DateTime.Now.AddDays(-5) }
+            });
+            await _context.SaveChangesAsync();
+
+            var posts = await _repository.QueryAllPostsAsync(title: "Journey");
+
+            Assert.Single(posts);
+            Assert.Equal("Journey to the Center of the Earth", posts.First().Title);
+        }
+
+
+        [Fact]
+        public async Task QueryAllPostsAsync_FiltersByDateRange_ReturnsMatchingPosts()
+        {
+            var today = DateTime.Now;
+            await _context.Posts.AddRangeAsync(new List<BlogPost>
+            {
+                new BlogPost { Id = 1, Title = "Journey to the Center of the Earth", Content = "Exploring Earth's core.", Author = "Jules Verne", PublishedDate = today.AddDays(-10) },
+                new BlogPost { Id = 2, Title = "Mastering the Art of French Cooking", Content = "Cooking techniques.", Author = "Julia Child", PublishedDate = today.AddDays(-5) },
+                new BlogPost { Id = 3, Title = "The Future of Artificial Intelligence", Content = "AI advancements.", Author = "John McCarthy", PublishedDate = today }
+            });
+            await _context.SaveChangesAsync();
+
+            var startDate = today.AddDays(-7);
+            var endDate = today;
+            var posts = await _repository.QueryAllPostsAsync(startDate: startDate, endDate: endDate);
+
+            Assert.Equal(2, posts.Count());
+            Assert.All(posts, post => Assert.True(post.PublishedDate >= startDate && post.PublishedDate <= endDate));
+        }
+
+        [Fact]
+        public async Task GetPostRecordByIdAsync_ReturnsPost_WhenPostExists()
+        {
+            var post = await _repository.GetPostRecordByIdAsync(699);
 
             Assert.NotNull(post);
             Assert.Equal(699, post.Id);
@@ -46,20 +82,20 @@ namespace Blog.API.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetByIdAsync_ReturnsNull_WhenPostDoesNotExist()
+        public async Task GetPostRecordByIdAsync_ReturnsNull_WhenPostDoesNotExist()
         {
-            var post = await _repository.GetByIdAsync(99);
+            var post = await _repository.GetPostRecordByIdAsync(99);
             Assert.Null(post);
         }
 
         [Fact]
-        public async Task AddAsync_AddsNewPost()
+        public async Task AddPostRecordAsync_AddsNewPost()
         {
-            var postList = await _repository.GetAllAsync();
+            var postList = await _repository.QueryAllPostsAsync();
             int postCount = postList.Count();
 
             var newPost = new BlogPost { Id = 993, Title = "Top 10 Travel Destinations for Adventure Lovers", Content = "A guide to the most exciting travel destinations for thrill-seekers", Author = "Janette", PublishedDate = DateTime.Now };
-            await _repository.AddAsync(newPost);
+            await _repository.AddPostRecordAsync(newPost);
             var post = await _context.Posts.FindAsync(993);
 
             Assert.NotNull(post);
@@ -70,10 +106,10 @@ namespace Blog.API.Tests.Repositories
         }
 
         [Fact]
-        public async Task UpdateAsync_UpdatesExistingPost()
+        public async Task UpdatePostRecordAsync_UpdatesExistingPost()
         {
             var updatedPost = new BlogPost { Id = 699, Title = "Updated Title", Content = "Updated Content", Author = "Tuchel", PublishedDate = DateTime.Now };
-            await _repository.UpdateAsync(updatedPost);
+            await _repository.UpdatePostRecordAsync(updatedPost);
             var post = await _context.Posts.FindAsync(699);
 
             Assert.NotNull(post);
@@ -83,12 +119,12 @@ namespace Blog.API.Tests.Repositories
         }
 
         [Fact]
-        public async Task DeleteAsync_RemovesPost_WhenPostExists()
+        public async Task DeletePostRecordAsync_RemovesPost_WhenPostExists()
         {
-            var postList = await _repository.GetAllAsync();
+            var postList = await _repository.QueryAllPostsAsync();
             int postCount = postList.Count();
 
-            await _repository.DeleteAsync(700);
+            await _repository.DeletePostRecordAsync(700);
             var post = await _context.Posts.FindAsync(700);
 
             Assert.Null(post);
@@ -96,9 +132,9 @@ namespace Blog.API.Tests.Repositories
         }
 
         [Fact]
-        public async Task DeleteAsync_DoesNothing_WhenPostDoesNotExist()
+        public async Task DeletePostRecordAsync_DoesNothing_WhenPostDoesNotExist()
         {
-            await _repository.DeleteAsync(99);
+            await _repository.DeletePostRecordAsync(99);
             var postsCount = _context.Posts.Count();
 
             Assert.Equal(2, postsCount); 

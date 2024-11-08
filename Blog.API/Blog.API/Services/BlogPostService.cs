@@ -15,28 +15,30 @@ namespace Blog.API.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllPostsAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllPostsAsync(string? title = null, string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            _logger.LogInformation("Retrieving all blog posts");
+            _logger.LogInformation("Retrieving blog posts with filters {title}, {author}, {startdate}, {endDate}", title, author, startDate, endDate);
+
             try
             {
-                var posts = await _postRepository.GetAllAsync() ?? new List<BlogPost>();
+                var posts = await _postRepository.QueryAllPostsAsync(title, author, startDate, endDate);
                 _logger.LogInformation("Successfully retrieved {Count} posts", posts.Count());
                 return posts;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving all blog posts");
+                _logger.LogError(ex, "An error occurred while retrieving blog posts");
                 throw;
             }
         }
+
 
         public async Task<BlogPost?> GetPostByIdAsync(int id)
         {
             _logger.LogInformation("Retrieving blog post with ID {Id}", id);
             try
             {
-                var post = await _postRepository.GetByIdAsync(id);
+                var post = await _postRepository.GetPostRecordByIdAsync(id);
                 if (post == null)
                 {
                     _logger.LogWarning("Blog post with ID {Id} not found", id);
@@ -65,7 +67,7 @@ namespace Blog.API.Services
 
             try
             {
-                await _postRepository.AddAsync(post);
+                await _postRepository.AddPostRecordAsync(post);
                 _logger.LogInformation("Successfully added blog post with ID {Id}", post.Id);
             }
             catch (Exception ex)
@@ -86,7 +88,7 @@ namespace Blog.API.Services
 
             try
             {
-                await _postRepository.UpdateAsync(post);
+                await _postRepository.UpdatePostRecordAsync(post);
                 _logger.LogInformation("Successfully updated blog post with ID {Id}", post.Id);
             }
             catch (Exception ex)
@@ -101,7 +103,7 @@ namespace Blog.API.Services
             _logger.LogInformation("Deleting blog post with ID {Id}", id);
             try
             {
-                await _postRepository.DeleteAsync(id);
+                await _postRepository.DeletePostRecordAsync(id);
                 _logger.LogInformation("Successfully deleted blog post with ID {Id}", id);
             }
             catch (Exception ex)

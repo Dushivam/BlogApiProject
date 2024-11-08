@@ -1,4 +1,3 @@
-using Blog.API;
 using Blog.API.Data;
 using Blog.API.Interfaces;
 using Blog.API.Services;
@@ -14,7 +13,12 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Services(services)
         .Enrich.FromLogContext();
 });
-builder.Services.AddOpenApiDocument();
+
+builder.Services.AddOpenApiDocument(document => {
+    document.Title = "Blog APIs";
+    document.Description = "A RESTful API for managing blog posts.";
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,5 +39,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-Console.WriteLine("App running");
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var addresses = app.Urls;
+    foreach (var address in addresses)
+    {
+        Log.Information("Application is running on: {Address}", address);
+    }
+});
+
+Log.Information("Blog API application is running.");
 app.Run();

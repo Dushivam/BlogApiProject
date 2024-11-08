@@ -32,18 +32,47 @@ namespace Blog.API.Tests.Services
                 new BlogPost { Id = 156, Title = "Understanding Climate Change and Its Impact", Content="A look at how climate change affects our environment and daily lives." },
                 new BlogPost { Id = 157, Title = "Unleashing the Potential of Remote Work", Content="How to stay productive and connected while working remotely." }
             };
-            _mockRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(mockPosts);
-
-            var result = await _service.GetAllPostsAsync();
+            _mockRepository.Setup(repo => repo.QueryAllPostsAsync(null, null, null, null)).ReturnsAsync(mockPosts);
+            var result = await _service.GetAllPostsAsync(null, null, null, null);
             Assert.Equal(2, result.Count());
-
         }
+
+        [Fact]
+        public async Task GetAllPostsAsync_CallsRepositoryWithTitleFilter()
+        {
+            var title = "Climate Change";
+            var mockPosts = new List<BlogPost>
+            {
+                new BlogPost { Id = 156, Title = "Understanding Climate Change and Its Impact", Content="A look at how climate change affects our environment and daily lives." }
+            };
+            _mockRepository.Setup(repo => repo.QueryAllPostsAsync(title, null, null, null)).ReturnsAsync(mockPosts);
+
+            var result = await _service.GetAllPostsAsync(title);
+            Assert.Single(result);
+            _mockRepository.Verify(repo => repo.QueryAllPostsAsync(title, null, null, null), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAllPostsPostsAsync_CallsRepositoryWithAuthorFilter()
+        {
+            var author = "John Doe";
+            var mockPosts = new List<BlogPost>
+            {
+                new BlogPost { Id = 158, Title = "The Future of Work", Content="Exploring changes in the workplace.", Author = "John Doe" }
+            };
+            _mockRepository.Setup(repo => repo.QueryAllPostsAsync(null, author, null, null)).ReturnsAsync(mockPosts);
+
+            var result = await _service.GetAllPostsAsync(author: author);
+            Assert.Single(result);
+            _mockRepository.Verify(repo => repo.QueryAllPostsAsync(null, author, null, null), Times.Once);
+        }
+
 
         [Fact]
         public async Task GetPostByIdAsync_ReturnsPost_WhenPostExists()
         {
             var mockPost = new BlogPost { Id = 1, Title = "Understanding Climate Change and Its Impact", Content = "A look at how climate change affects our environment and daily lives." };
-            _mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(mockPost);
+            _mockRepository.Setup(repo => repo.GetPostRecordByIdAsync(1)).ReturnsAsync(mockPost);
 
             var result = await _service.GetPostByIdAsync(1);
 
@@ -55,10 +84,9 @@ namespace Blog.API.Tests.Services
         [Fact]
         public async Task GetPostByIdAsync_ReturnsNull_WhenPostDoesNotExist()
         {
-            _mockRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((BlogPost)null);
+            _mockRepository.Setup(repo => repo.GetPostRecordByIdAsync(1)).ReturnsAsync((BlogPost)null);
 
             var result = await _service.GetPostByIdAsync(1);
-
             Assert.Null(result);
         }
 
@@ -69,7 +97,7 @@ namespace Blog.API.Tests.Services
 
             await _service.AddPostAsync(newPost);
 
-            _mockRepository.Verify(repo => repo.AddAsync(newPost), Times.Once);
+            _mockRepository.Verify(repo => repo.AddPostRecordAsync(newPost), Times.Once);
         }
 
         [Fact]
@@ -85,7 +113,7 @@ namespace Blog.API.Tests.Services
 
             await _service.UpdatePostAsync(updatedPost);
 
-            _mockRepository.Verify(repo => repo.UpdateAsync(updatedPost), Times.Once);
+            _mockRepository.Verify(repo => repo.UpdatePostRecordAsync(updatedPost), Times.Once);
         }
 
         [Fact]
@@ -101,7 +129,7 @@ namespace Blog.API.Tests.Services
 
             await _service.DeletePostAsync(postId);
 
-            _mockRepository.Verify(repo => repo.DeleteAsync(postId), Times.Once);
+            _mockRepository.Verify(repo => repo.DeletePostRecordAsync(postId), Times.Once);
         }
     }
 }

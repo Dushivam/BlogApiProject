@@ -20,19 +20,20 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet]
-        [OpenApiOperation (summary:"Retrieve all blog posts", "")]
-        public async Task<ActionResult<IEnumerable<BlogPost>>> GetAllPosts()
+        [OpenApiOperation(summary: "This endpoint returns all blog posts stored in the system.", description: "Returns an array of blog posts. Each blog post includes details such as the ID, title, content, author, and published date. Supports optional filters by title, author, and published date range.")]
+        public async Task<ActionResult<IEnumerable<BlogPost>>> GetAllPosts(string? title = null, string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            _logger.LogInformation("Getting all blog posts");
+            _logger.LogInformation("Retrieving all blog posts.");
+
             try
             {
-                var posts = await _blogPostService.GetAllPostsAsync();
+                var posts = await _blogPostService.GetAllPostsAsync(title, author, startDate, endDate);
                 _logger.LogInformation("Successfully retrieved {Count} posts", posts.Count());
                 return Ok(posts);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
             {
-                _logger.LogError(dbEx, "An database error occurred while creating a new blog post");
+                _logger.LogError(dbEx, "A database error occurred while retrieving blog posts");
                 return StatusCode(500, $"Internal server error. {dbEx.Message}");
             }
             catch (Exception ex)
@@ -43,7 +44,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [OpenApiOperation(summary: "Retrieve a blog by id", "")]
+        [OpenApiOperation(summary: "This endpoint returns a single blog post based on the provided ID.", "")]
 
         public async Task<ActionResult<BlogPost>> GetPostById(int id)
         {
@@ -72,7 +73,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost]
-        [OpenApiOperation(summary: "Create a blog", "")]
+        [OpenApiOperation(summary: "This endpoint allows clients to create a new blog post by providing required data.", "")]
 
         public async Task<ActionResult<BlogPost>> CreatePost(BlogPostCreateDto postDto)
         {
@@ -118,7 +119,7 @@ namespace Blog.API.Controllers
             }
         }
 
-        [OpenApiOperation(summary: "Update a blog post", "")]
+        [OpenApiOperation(summary: "This endpoint allows clients to update an existing blog post by providing new values for title, content, and author.", "")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePost(int id, BlogPostUpdateDto postDto)
         {
@@ -156,7 +157,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [OpenApiOperation(summary: "Delete a blog post", "")]
+        [OpenApiOperation(summary: "This endpoint allows clients to delete a blog post with the specified ID from the system.", "")]
         public async Task<IActionResult> DeletePost(int id)
         {
             _logger.LogInformation("Deleting blog post with ID {Id}", id);

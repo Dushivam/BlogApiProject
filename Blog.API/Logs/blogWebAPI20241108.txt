@@ -1,0 +1,111 @@
+2024-11-08 11:42:49.861 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:42:49.963 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:42:49.993 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:42:52.454 +04:00 [INF] Successfully retrieved 2 posts from the database with filters
+2024-11-08 11:42:52.466 +04:00 [INF] Successfully retrieved 2 filtered posts
+2024-11-08 11:42:52.470 +04:00 [INF] Successfully retrieved 2 posts
+2024-11-08 11:43:12.577 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:43:12.581 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:43:12.584 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:43:12.810 +04:00 [INF] Successfully retrieved 1 posts from the database with filters
+2024-11-08 11:43:12.815 +04:00 [INF] Successfully retrieved 1 filtered posts
+2024-11-08 11:43:12.819 +04:00 [INF] Successfully retrieved 1 posts
+2024-11-08 11:43:23.153 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:43:23.157 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:43:23.160 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:43:23.320 +04:00 [INF] Successfully retrieved 2 posts from the database with filters
+2024-11-08 11:43:23.325 +04:00 [INF] Successfully retrieved 2 filtered posts
+2024-11-08 11:43:23.329 +04:00 [INF] Successfully retrieved 2 posts
+2024-11-08 11:43:45.003 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:43:45.005 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:43:45.007 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:43:45.089 +04:00 [INF] Successfully retrieved 0 posts from the database with filters
+2024-11-08 11:43:45.093 +04:00 [INF] Successfully retrieved 0 filtered posts
+2024-11-08 11:43:45.097 +04:00 [INF] Successfully retrieved 0 posts
+2024-11-08 11:43:50.855 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:43:50.858 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:43:50.861 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:43:50.866 +04:00 [INF] Successfully retrieved 1 posts from the database with filters
+2024-11-08 11:43:50.870 +04:00 [INF] Successfully retrieved 1 filtered posts
+2024-11-08 11:43:50.874 +04:00 [INF] Successfully retrieved 1 posts
+2024-11-08 11:44:01.903 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:44:01.906 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:44:01.910 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:44:01.925 +04:00 [INF] Successfully retrieved 1 posts from the database with filters
+2024-11-08 11:44:01.929 +04:00 [INF] Successfully retrieved 1 filtered posts
+2024-11-08 11:44:01.934 +04:00 [INF] Successfully retrieved 1 posts
+2024-11-08 11:44:07.530 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:44:07.532 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:44:07.533 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:44:07.536 +04:00 [INF] Successfully retrieved 0 posts from the database with filters
+2024-11-08 11:44:07.539 +04:00 [INF] Successfully retrieved 0 filtered posts
+2024-11-08 11:44:07.542 +04:00 [INF] Successfully retrieved 0 posts
+2024-11-08 11:44:12.492 +04:00 [INF] Getting all blog posts with optional filters
+2024-11-08 11:44:12.495 +04:00 [INF] Retrieving filtered blog posts
+2024-11-08 11:44:12.498 +04:00 [INF] Retrieving blog posts from the database with filters
+2024-11-08 11:44:12.504 +04:00 [INF] Successfully retrieved 2 posts from the database with filters
+2024-11-08 11:44:12.509 +04:00 [INF] Successfully retrieved 2 filtered posts
+2024-11-08 11:44:12.517 +04:00 [INF] Successfully retrieved 2 posts
+2024-11-08 14:47:53.269 +04:00 [INF] Applying middleware...
+2024-11-08 14:47:53.679 +04:00 [INF] Blog API application is running.
+2024-11-08 14:47:54.202 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:47:54.210 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:50:20.291 +04:00 [INF] Starting Blog API application setup...
+2024-11-08 14:50:21.058 +04:00 [INF] Configuring services...
+2024-11-08 14:50:21.156 +04:00 [INF] Setting up the database with connection string: Data Source=blog.db
+2024-11-08 14:50:21.270 +04:00 [INF] Applying middleware...
+2024-11-08 14:50:21.694 +04:00 [INF] Blog API application is running.
+2024-11-08 14:50:22.294 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:50:22.299 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:50:58.377 +04:00 [INF] Starting Blog API application setup...
+2024-11-08 14:50:59.244 +04:00 [INF] Configuring services...
+2024-11-08 14:50:59.378 +04:00 [INF] Setting up the database with connection string: Data Source=blog.db
+2024-11-08 14:50:59.542 +04:00 [INF] Applying middleware...
+2024-11-08 14:51:00.234 +04:00 [INF] Blog API application is running.
+2024-11-08 14:51:00.645 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:51:00.650 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:52:17.986 +04:00 [INF] Starting Blog API application setup...
+2024-11-08 14:52:18.724 +04:00 [INF] Configuring services...
+2024-11-08 14:52:18.840 +04:00 [INF] Setting up the database with connection string: Data Source=blog.db
+2024-11-08 14:52:19.131 +04:00 [INF] Applying middleware...
+2024-11-08 14:52:19.804 +04:00 [INF] Blog API application is running.
+2024-11-08 14:52:20.738 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:52:20.743 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:53:04.052 +04:00 [INF] Applying middleware...
+2024-11-08 14:53:04.508 +04:00 [INF] Blog API application is running.
+2024-11-08 14:53:05.663 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:53:05.668 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:55:30.063 +04:00 [INF] Blog API application is running.
+2024-11-08 14:55:30.406 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:55:30.410 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:55:52.371 +04:00 [INF] Blog API application is running.
+2024-11-08 14:55:53.098 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:55:53.103 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:56:17.965 +04:00 [INF] Blog API application is running.
+2024-11-08 14:56:18.323 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:56:18.328 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:56:52.359 +04:00 [INF] Blog API application is running.
+2024-11-08 14:56:53.126 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:56:53.139 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 14:59:30.640 +04:00 [INF] Starting Blog API application setup...
+2024-11-08 14:59:31.603 +04:00 [INF] Setting up the database with connection string: Data Source=blog.db
+2024-11-08 14:59:32.436 +04:00 [INF] Blog API application is running.
+2024-11-08 14:59:33.300 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 14:59:33.305 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 15:00:18.604 +04:00 [INF] Blog API application is running.
+2024-11-08 15:00:19.046 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 15:00:19.051 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 15:01:15.090 +04:00 [INF] Blog API application is running.
+2024-11-08 15:01:15.966 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 15:01:15.971 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 15:01:26.762 +04:00 [INF] Retrieving all blog posts.
+2024-11-08 15:01:26.768 +04:00 [INF] Retrieving blog posts with filters null, null, null, null
+2024-11-08 15:01:27.588 +04:00 [INF] Successfully retrieved 2 posts from the database
+2024-11-08 15:01:27.593 +04:00 [INF] Successfully retrieved 2 posts
+2024-11-08 15:01:27.595 +04:00 [INF] Successfully retrieved 2 posts
+2024-11-08 15:02:03.833 +04:00 [INF] Retrieving all blog posts.
+2024-11-08 15:02:03.835 +04:00 [INF] Retrieving blog posts with filters bob, null, null, null
+2024-11-08 15:02:03.840 +04:00 [INF] Retrieving blog posts from the database with filter title = bob
+2024-11-08 15:02:03.948 +04:00 [INF] Successfully retrieved 0 posts from the database
+2024-11-08 15:02:03.950 +04:00 [INF] Successfully retrieved 0 posts
+2024-11-08 15:02:03.955 +04:00 [INF] Successfully retrieved 0 posts

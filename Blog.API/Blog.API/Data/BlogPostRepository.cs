@@ -1,11 +1,10 @@
 ﻿using Blog.API.Interfaces;
 using Blog.API.Models;
-using Blog.API.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blog.API
+namespace Blog.API.Data
 {
     public class BlogPostRepository : IBlogPostRepository
     {
@@ -17,23 +16,48 @@ namespace Blog.API
             _logger = logger;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllAsync()
+        public async Task<IEnumerable<BlogPost>> QueryAllPostsAsync(string? title = null,string? author = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            _logger.LogInformation("Retrieving all blog posts from the database");
             try
             {
-                var posts = await _context.Posts.ToListAsync();
+                var query = _context.Posts.AsQueryable();
+
+                if (!string.IsNullOrEmpty(title))
+                {
+                    _logger.LogInformation("Retrieving blog posts from the database with filter title = {title}", title);
+                    query = query.Where(post => post.Title.Contains(title));
+                }
+
+                if (!string.IsNullOrEmpty(author))
+                {
+                    _logger.LogInformation("Retrieving blog posts from the database with filter author = {author}", author);
+                    query = query.Where(post => post.Author.Contains(author));
+                }
+
+                if (startDate.HasValue)
+                {
+                    _logger.LogInformation("Retrieving blog posts from the database with filter startDate = {date}", startDate.Value);
+                    query = query.Where(post => post.PublishedDate >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    _logger.LogInformation("Retrieving blog posts from the database with filter endDate = {date}", endDate.Value);
+                    query = query.Where(post => post.PublishedDate <= endDate.Value);
+                }
+
+                var posts = await query.ToListAsync();
                 _logger.LogInformation("Successfully retrieved {Count} posts from the database", posts.Count);
                 return posts;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving all blog posts from the database");
+                _logger.LogError(ex, "An error occurred while retrieving blog posts with filters from the database");
                 throw;
             }
         }
 
-        public async Task<BlogPost?> GetByIdAsync(int id)
+        public async Task<BlogPost?> GetPostRecordByIdAsync(int id)
         {
             _logger.LogInformation("Retrieving blog post with ID {Id} from the database", id);
             try
@@ -56,7 +80,7 @@ namespace Blog.API
             }
         }
 
-        public async Task AddAsync(BlogPost post)
+        public async Task AddPostRecordAsync(BlogPost post)
         {
             _logger.LogInformation("Adding a new blog post to the database");
             try
@@ -72,7 +96,7 @@ namespace Blog.API
             }
         }
 
-        public async Task UpdateAsync(BlogPost post)
+        public async Task UpdatePostRecordAsync(BlogPost post)
         {
             _logger.LogInformation("Updating blog post with ID {Id} in the database", post.Id);
             try
@@ -80,7 +104,6 @@ namespace Blog.API
                 var existingPost = await _context.Posts.FindAsync(post.Id);
                 if (existingPost != null)
                 {
-                    // Map properties from the incoming post to the existingPost
                     existingPost.Title = post.Title;
                     existingPost.Content = post.Content;
                     existingPost.Author = post.Author;
@@ -97,7 +120,7 @@ namespace Blog.API
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeletePostRecordAsync(int id)
         {
             _logger.LogInformation("Deleting blog post with ID {Id} from the database", id);
             try
