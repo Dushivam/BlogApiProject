@@ -6,13 +6,13 @@ namespace Blog.API.DTOs
     {
         [Required]
         [MaxLength(100)]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Required]
-        public string Content { get; set; }
+        public required string Content { get; set; }
 
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Author name can only contain letters and spaces.")]
-        public string Author { get; set; }
+        public string? Author { get; set; }
     }
 
 }

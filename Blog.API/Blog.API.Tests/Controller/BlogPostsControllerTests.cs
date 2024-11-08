@@ -113,7 +113,7 @@ namespace Blog.API.Tests.Controller
         {
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync((BlogPost)null);
             var result = await _controller.GetPostById(1);
-            Assert.IsType<NotFoundResult>(result.Result);
+            Assert.IsType<NotFoundObjectResult>(result.Result);
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace Blog.API.Tests.Controller
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync((BlogPost)null);
 
             var result = await _controller.UpdatePost(1, updatedPost);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]
@@ -272,7 +272,7 @@ namespace Blog.API.Tests.Controller
             _mockBlogPostService.Setup(service => service.GetPostByIdAsync(1)).ReturnsAsync((BlogPost)null);
             
             var result = await _controller.DeletePost(1);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

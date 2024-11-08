@@ -55,7 +55,11 @@ namespace Blog.API.Controllers
                 if (post == null)
                 {
                     _logger.LogWarning("Blog post with ID {Id} not found", id);
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        message = $"Blog post with ID {id} not found.",
+                        status = 404
+                    });
                 }
                 _logger.LogInformation("Successfully retrieved blog post with ID {Id}", id);
                 return Ok(post);
@@ -137,7 +141,11 @@ namespace Blog.API.Controllers
                 if (existingPost == null)
                 {
                     _logger.LogWarning("Blog post with ID {Id} not found", id);
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        message = $"Blog post with ID {id} not found.",
+                        status = 404
+                    });
                 }
 
                 existingPost.Title = postDto.Title;
@@ -167,7 +175,11 @@ namespace Blog.API.Controllers
                 if (post == null)
                 {
                     _logger.LogWarning("Blog post with ID {Id} not found", id);
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        message = $"Blog post with ID {id} not found.",
+                        status = 404
+                    });
                 }
 
                 await _blogPostService.DeletePostAsync(id);

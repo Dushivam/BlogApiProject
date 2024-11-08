@@ -109,3 +109,23 @@
 2024-11-08 15:02:03.948 +04:00 [INF] Successfully retrieved 0 posts from the database
 2024-11-08 15:02:03.950 +04:00 [INF] Successfully retrieved 0 posts
 2024-11-08 15:02:03.955 +04:00 [INF] Successfully retrieved 0 posts
+2024-11-08 17:01:30.560 +04:00 [INF] Blog API application is running.
+2024-11-08 17:01:31.020 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 17:01:31.024 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 17:01:40.359 +04:00 [INF] Getting blog post with ID 45
+2024-11-08 17:01:40.380 +04:00 [INF] Retrieving blog post with ID 45
+2024-11-08 17:01:40.387 +04:00 [INF] Retrieving blog post with ID 45 from the database
+2024-11-08 17:01:42.804 +04:00 [WRN] Blog post with ID 45 not found in the database
+2024-11-08 17:01:42.808 +04:00 [WRN] Blog post with ID 45 not found
+2024-11-08 17:01:42.813 +04:00 [WRN] Blog post with ID 45 not found
+2024-11-08 17:09:44.664 +04:00 [INF] Blog API application is running.
+2024-11-08 17:09:45.072 +04:00 [INF] Application is running on: https://localhost:7079
+2024-11-08 17:09:45.077 +04:00 [INF] Application is running on: http://localhost:5041
+2024-11-08 17:09:53.843 +04:00 [INF] Getting blog post with ID 45
+2024-11-08 17:09:53.867 +04:00 [INF] Retrieving blog post with ID 45
+2024-11-08 17:09:53.874 +04:00 [INF] Retrieving blog post with ID 45 from the database
+2024-11-08 17:09:54.679 +04:00 [WRN] Blog post with ID 45 not found in the database
+2024-11-08 17:09:54.685 +04:00 [WRN] Blog post with ID 45 not found
+2024-11-08 17:09:54.690 +04:00 [WRN] Blog post with ID 45 not found
+2024-11-08 17:40:32.867 +04:00 [INF] Blog API application is running.
+2024-11-08 17:40:32.984 +04:00 [INF] Application is running on: http://localhost:5041

@@ -15,7 +15,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
 });
 
 builder.Services.AddOpenApiDocument(document => {
-    document.Title = "Blog APIs";
+    document.Title = "Blog API Project";
     document.Description = "A RESTful API for managing blog posts.";
 });
 
@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlite(connectionString));
 
 var app = builder.Build();
@@ -38,6 +39,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {

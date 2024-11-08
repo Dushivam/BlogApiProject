@@ -31,7 +31,8 @@ namespace Blog.API.Data
                 if (!string.IsNullOrEmpty(author))
                 {
                     _logger.LogInformation("Retrieving blog posts from the database with filter author = {author}", author);
-                    query = query.Where(post => post.Author.Contains(author));
+                    query = query.Where(post => post.Author != null && post.Author.Contains(author));
+
                 }
 
                 if (startDate.HasValue)
