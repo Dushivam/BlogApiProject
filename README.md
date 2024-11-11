@@ -1,7 +1,7 @@
 # Blog API Project
 ## Description
 
-The project uses SQLite as its database and uses Serilog for structured logging, ensuring that critical actions and errors are logged effectively. The project is also Dockerized for ease of deployment, making it simple to run in any environment. Additionally, comprehensive validation is applied to ensure data integrity, and meaningful error messages are returned to the client, enhancing the API's usability
+This is a RESTful Web API built with ASP.NET Core for managing blog posts, including creating, reading, updating, and deleting (CRUD) operations. The project uses SQLite as its database and uses Serilog for structured logging, ensuring that critical actions and errors are logged effectively. The project is also Dockerized for ease of deployment, making it simple to run in any environment. Additionally, comprehensive validation is applied to ensure data integrity, and meaningful error messages are returned to the client, enhancing the API's usability
 
 ## Table of Contents
 
@@ -32,13 +32,15 @@ The project uses SQLite as its database and uses Serilog for structured logging,
 
 ## 💻 Technologies Used
 
-- ⚙️ **ASP.NET Core 8**: The primary framework used to build the Web API.
-- 🗄️ **Entity Framework Core**: An ORM (Object-Relational Mapper) used to interact with the SQLite database in an object-oriented way.
-- 💾 **SQLite**: Lightweight, file-based database chosen for simplicity and ease of setup.
-- 🐳 **Docker**: Containerization tool that enables easy deployment and environment consistency across different platforms.
-- 🛠️ **Serilog**: Structured logging library used to log important actions and errors, enhancing debugging and monitoring.
-- 📄 **Swagger / Swashbuckle**: Used for auto-generating API documentation, providing an interactive UI to test API endpoints.
-- ✅ **xUnit**: Unit testing framework for validating API functionality and ensuring reliability.
+| Technology                          | Purpose                                                                                                           |
+|-------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **⚙️ ASP.NET Core 8**                | The primary framework used to build the Web API.                                                                  |
+| **🗄️ Entity Framework Core**         | An ORM (Object-Relational Mapper) used to interact with the SQLite database in an object-oriented way.            |
+| **💾 SQLite**                        | A lightweight, file-based database chosen for simplicity and ease of setup.                                       |
+| **🐳 Docker**                        | Containerization tool that enables easy deployment and environment consistency across different platforms.        |
+| **🛠️ Serilog**                      | A structured logging library used to log important actions and errors, enhancing debugging and monitoring.       |
+| **📄 Swagger / Swashbuckle**         | Used for auto-generating API documentation, providing an interactive UI to test API endpoints.                   |
+| **✅ xUnit**                         | A unit testing framework for validating API functionality and ensuring reliability.                              |
 
 ---
 
@@ -304,21 +306,16 @@ These tests ensure the API meets functional requirements and provides reliable f
 
 The **Blog API Project** utilizes several **NuGet packages** to ease development. Below is a list of the key packages and their purposes:
 
-- **Microsoft.EntityFrameworkCore.Sqlite**: Provides SQLite support for Entity Framework Core, enabling the API to use SQLite as its database.
-
-- **Microsoft.EntityFrameworkCore.Tools**: Provides CLI tools for managing database migrations and updates.
-
-- **Serilog.AspNetCore**: Integrates Serilog for structured logging within the ASP.NET Core application.
-
-- **Serilog.Sinks.Console**: Enables logging to the console, making it easy to view logs while the application is running.
-
-- **Serilog.Sinks.File**: Allows logs to be written to a file, creating a persistent record for later analysis.
-
-- **Swashbuckle.AspNetCore**: Adds Swagger support to auto-generate API documentation and create an interactive UI for testing API endpoints.
-
-- **xUnit and Moq**: Provides a testing framework and mocking capabilities to ensure reliable and well-tested code.
-
-- **NSwag.Annotations**: Adds Swagger-specific annotations for additional control over API documentation.
+| NuGet Package                       | Purpose                                                                                                  |
+|-------------------------------------|----------------------------------------------------------------------------------------------------------|
+| **Microsoft.EntityFrameworkCore.Sqlite** | Enables SQLite support for Entity Framework Core, allowing the API to use SQLite as its database.         |
+| **Microsoft.EntityFrameworkCore.Tools** | Provides CLI tools for managing database migrations and updates.                                         |
+| **Serilog.AspNetCore**              | Integrates Serilog for structured logging within the ASP.NET Core application.                            |
+| **Serilog.Sinks.Console**           | Enables logging to the console, making it easy to view logs while the application is running.             |
+| **Serilog.Sinks.File**              | Allows logs to be written to a file, creating a persistent record for later analysis.                    |
+| **Swashbuckle.AspNetCore**          | Adds Swagger support to auto-generate API documentation and create an interactive UI for testing.        |
+| **xUnit and Moq**                   | Provides a testing framework and mocking capabilities to ensure reliable and well-tested code.           |
+| **NSwag.Annotations**               | Adds Swagger-specific annotations for additional control over API documentation.                         |
 
 ---
 
